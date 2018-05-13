@@ -48,6 +48,7 @@ var incorrectAnswers = 0;
 var noAnswers = 0;
 var time = 21;
 var timeRunning = false;
+var intervalId;
 
 var gameNavigation = {
     actionClick: function (question) {
@@ -83,6 +84,7 @@ var gameNavigation = {
     },
     showResult: function () {
         $(".contentSection").empty();
+        clearInterval(intervalId);
         var results = $("<div>");
         results.html("Correct Answers: " + correctAnswers + ", Incorrect Answers: " + incorrectAnswers 
         + ", Incomplete Answers: " + noAnswers);
@@ -102,12 +104,12 @@ var gameNavigation = {
         if (time === 0) {
             console.log("You didn't answer...");
             noAnswers++;
-            currentQuestion++;
             if (questionObjArr[currentQuestion].finalQuestion === true) {
                 gameNavigation.showResult();
             } else {
                 gameNavigation.generateQuestion();
             }
+            currentQuestion++;
         }
     }
 }
@@ -118,7 +120,7 @@ $(document).ready(function () {
         $(".contentSection").html("<div class='questionContainer'></div>");
         $(".contentSection").append("<div class='timerSection'></div>");
         gameNavigation.generateQuestion();
-        setInterval(gameNavigation.countDown, 1000);
+        intervalId = setInterval(gameNavigation.countDown, 1000);
 
     })
 
