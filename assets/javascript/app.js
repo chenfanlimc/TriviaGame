@@ -5,40 +5,46 @@ var questionOne = {
     answersArray: ["A spear with a criss-crossing hilt", "A flying dragon that lifts the world",
         "A serpent that eats its own tail", "A beautiful princess surrounded by fire"],
     answer: 2,
-    finalQuestion: false
+    finalQuestion: false,
+    animation: "ouroboros.gif"
 }
 var questionTwo = {
     question: "From what ancient Chinese epic did the Monkey King originate from?",
     answersArray: ["Journey to the West", "Romance of the Three Kingdoms", "Dream of the Red Chamber", "Water Margin"],
     answer: 0,
-    finalQuestion: false
+    finalQuestion: false,
+    animation: "monkey.gif"
 }
 var questionThree = {
     question: "In the Japanese mythology of Susanoo and Orochi, what is the name of the sword that slays the legendary serpent?",
     answersArray: ["Demon Cutter of Seven Curses", "Sword of the Gathering Clouds of Heaven",
         "Swallow Blade of Divine Wind", "Death-Culling Spirit Blade"],
     answer: 1,
-    finalQuestion: false
+    finalQuestion: false,
+    animation: "orochi.gif"
 }
 var questionFour = {
     question: "What is the primary purpose of Yggdrasil, the mythical tree of Norse Mythology?",
     answersArray: ["It is the core of the cosmos and connects all the worlds", "It is a flying tree that houses various Norse gods",
         "It is a legendary source of ingredients for the mightiest weapons", "It is a mythical staff wielded by Odin during Ragnorak"],
     answer: 0,
-    finalQuestion: false
+    finalQuestion: false,
+    animation: "norse.gif"
 }
 var questionFive = {
     question: "In Greek Mythology, how many Titans were originally borne from Gaia?",
     answersArray: ["6", "10", "12", "15"],
     answer: 2,
-    finalQuestion: false
+    finalQuestion: false,
+    animation: "titans.gif"
 }
 var questionSix = {
     question: "In The Epic of Gilgamesh, why did the gods send Enkidu to Gilgamesh?",
     answersArray: ["To become his life-long friend", "To inspire him to do great things",
         "To aid him in the battle against the Bull of Heaven", "To humble him of his arrogance"],
     answer: 3,
-    finalQuestion: true
+    finalQuestion: true,
+    animation: "gilgamesh.gif"
 }
 
 var questionObjArr = [questionOne, questionTwo, questionThree, questionFour, questionFive, questionSix];
