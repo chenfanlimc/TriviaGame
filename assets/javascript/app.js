@@ -51,34 +51,45 @@ var questionObjArr = [questionOne, questionTwo, questionThree, questionFour, que
 var currentQuestion = 0;
 var correctAnswers = 0;
 var incorrectAnswers = 0;
+var question = questionObjArr[currentQuestion];
 var noAnswers = 0;
-var time = 21;
+var time = 10;
 var timeRunning = false;
 var intervalId;
 
 var gameNavigation = {
     actionClick: function (question) {
         $(".answerButtons").on("click", function () {
+            gameNavigation.clearTimer();
             if ($(this).val() === question.answersArray[question.answer]) {
-                console.log("Correct answer");
                 correctAnswers++;
-
+                $(".answerAnimation").html("<img src='assets/images/" + question.animation + "'/>").append(
+                    "<p>You're Correct! The correct answer is: " + question.answersArray[question.answer]);
             } else {
-                console.log("Wrong answer");
                 incorrectAnswers++;
+                $(".answerAnimation").html("<img src='assets/images/" + question.animation + "'/>").append(
+                    "<p>Incorrect! The correct answer is: " + question.answersArray[question.answer]);
             }
+            $(".answerButtons").remove();
+            setTimeout(function () {
+                $(".answerAnimation").empty();
+                $(".contentSection").append("<div class='timerSection'></div>")
+            }, 5000)
             currentQuestion++;
             console.log(question);
-            if (question.finalQuestion === true) {
-                gameNavigation.showResult();
-            } else {
-                gameNavigation.generateQuestion();
-            }
+            setTimeout(function () {
+                if (question.finalQuestion === true) {
+                    gameNavigation.showResult();
+                } else {
+                    gameNavigation.generateQuestion();
+                    gameNavigation.setTimer();
+                }
+            }, 5000);
+
 
         })
     },
     generateQuestion: function () {
-        time = 21;
         $(".questionContainer").html(questionObjArr[currentQuestion].question);
         $(".answerButtons").remove();
         for (var i = 0; i < questionObjArr[currentQuestion].answersArray.length; i++) {
@@ -87,13 +98,15 @@ var gameNavigation = {
             $(".contentSection").append(button);
         }
         this.actionClick(questionObjArr[currentQuestion]);
+        time = 10;
+        gameNavigation.setTimer();
     },
     showResult: function () {
         $(".contentSection").empty();
         clearInterval(intervalId);
         var results = $("<div>");
-        results.html("Correct Answers: " + correctAnswers + ", Incorrect Answers: " + incorrectAnswers 
-        + ", Incomplete Answers: " + noAnswers);
+        results.html("Correct Answers: " + correctAnswers + ", Incorrect Answers: " + incorrectAnswers
+            + ", Incomplete Answers: " + noAnswers);
         $(".contentSection").append(results);
 
     },
@@ -104,17 +117,34 @@ var gameNavigation = {
             $(".timerSection").html("00:" + time);
         }
     },
+    clearTimer: function () {
+        $(".timerSection").remove();
+    },
     countDown: function () {
-        time--;
         gameNavigation.setTimer();
+        time--;
         if (time === 0) {
             console.log("You didn't answer...");
             noAnswers++;
-            if (questionObjArr[currentQuestion].finalQuestion === true) {
-                gameNavigation.showResult();
-            } else {
-                gameNavigation.generateQuestion();
-            }
+            question = questionObjArr[currentQuestion];
+            gameNavigation.clearTimer();
+            $(".answerAnimation").html("<img src='assets/images/" + question.animation + "'/>").append(
+                "<p>You didn't answer! The correct answer is: " + question.answersArray[question.answer]);
+
+            $(".answerButtons").remove();
+            setTimeout(function () {
+                $(".answerAnimation").empty();
+                $(".contentSection").append("<div class='timerSection'></div>")
+            }, 5000)
+
+            setTimeout(function () {
+                if (questionObjArr[currentQuestion].finalQuestion === true) {
+                    gameNavigation.showResult();
+                } else {
+                    gameNavigation.generateQuestion();
+                    gameNavigation.setTimer();
+                }
+            }, 5000);
             currentQuestion++;
         }
     }
@@ -125,6 +155,7 @@ $(document).ready(function () {
     $(".start").on("click", function () {
         $(".contentSection").html("<div class='questionContainer'></div>");
         $(".contentSection").append("<div class='timerSection'></div>");
+        $(".contentSection").append("<div class='answerAnimation'></div>");
         gameNavigation.generateQuestion();
         intervalId = setInterval(gameNavigation.countDown, 1000);
 
