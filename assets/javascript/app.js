@@ -121,8 +121,8 @@ var gameNavigation = {
         $(".timerSection").remove();
     },
     countDown: function () {
-        gameNavigation.setTimer();
         time--;
+        gameNavigation.setTimer();
         if (time === 0) {
             console.log("You didn't answer...");
             noAnswers++;
@@ -157,7 +157,9 @@ $(document).ready(function () {
         $(".contentSection").append("<div class='timerSection'></div>");
         $(".contentSection").append("<div class='answerAnimation'></div>");
         gameNavigation.generateQuestion();
+        gameNavigation.setTimer();
         intervalId = setInterval(gameNavigation.countDown, 1000);
+        
 
     })
 
