@@ -1,5 +1,5 @@
 .container {
-    width: 960px;
+    /* width: 960px; */
     background-image: url("../images/128-168.jpg");
     height: 400px;
     position: relative;
@@ -23,4 +23,9 @@
 
 body {
     background-image: url("../images/128-198.jpg");
+}
+
+.sidebar {
+    background-image: url("../images/funky-lines.png");
+
 }

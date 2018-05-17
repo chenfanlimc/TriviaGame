@@ -60,6 +60,7 @@ var intervalId;
 var gameNavigation = {
     actionClick: function (question) {
         $(".answerButtons").on("click", function () {
+            gameNavigation.stopTimer();
             gameNavigation.clearTimer();
             if ($(this).val() === question.answersArray[question.answer]) {
                 correctAnswers++;
@@ -75,18 +76,17 @@ var gameNavigation = {
                 $(".answerAnimation").empty();
                 $(".contentSection").append("<div class='timerSection'></div>")
             }, 5000)
-            currentQuestion++;
-            console.log(question);
             setTimeout(function () {
                 if (question.finalQuestion === true) {
                     gameNavigation.showResult();
                 } else {
+                    currentQuestion++;
                     gameNavigation.generateQuestion();
                     gameNavigation.setTimer();
+                    gameNavigation.beginTimer();
                 }
             }, 5000);
-
-
+            
         })
     },
     generateQuestion: function () {
@@ -108,7 +108,36 @@ var gameNavigation = {
         results.html("Correct Answers: " + correctAnswers + ", Incorrect Answers: " + incorrectAnswers
             + ", Incomplete Answers: " + noAnswers);
         $(".contentSection").append(results);
-
+        this.restart()
+    },
+    restart: function () {
+        $(".contentSection").append("<button type='button' class='btn btn-info restart'>Restart</button>")
+        $(".restart").on("click", function () {
+            $(".contentSection").empty();
+            clearInterval(intervalId);
+            $(".contentSection").append("<button type='button' class='btn btn-info start'>Start</button>")
+            gameNavigation.start();
+        })
+    },
+    start: function () {
+        $(".start").on("click", function () {
+            $(".contentSection").html("<div class='questionContainer'></div>");
+            $(".contentSection").append("<div class='timerSection'></div>");
+            $(".contentSection").append("<div class='answerAnimation'></div>");
+            currentQuestion = 0;
+            correctAnswers = 0;
+            incorrectAnswers = 0;
+            noAnswers = 0;
+            gameNavigation.generateQuestion();
+            gameNavigation.setTimer();
+            gameNavigation.beginTimer();
+        })
+    },
+    beginTimer: function () {
+        intervalId = setInterval(gameNavigation.countDown, 1000);
+    },
+    stopTimer: function () {
+        clearInterval(intervalId);
     },
     setTimer: function () {
         if (time < 10) {
@@ -124,8 +153,12 @@ var gameNavigation = {
         time--;
         gameNavigation.setTimer();
         if (time === 0) {
+            console.log(currentQuestion);
+            gameNavigation.stopTimer();
+            time = 10;
             console.log("You didn't answer...");
             noAnswers++;
+            console.log(noAnswers);
             question = questionObjArr[currentQuestion];
             gameNavigation.clearTimer();
             $(".answerAnimation").html("<img src='assets/images/" + question.animation + "'/>").append(
@@ -138,33 +171,21 @@ var gameNavigation = {
             }, 5000)
 
             setTimeout(function () {
+                console.log(currentQuestion);
                 if (questionObjArr[currentQuestion].finalQuestion === true) {
                     gameNavigation.showResult();
                 } else {
+                    currentQuestion++
                     gameNavigation.generateQuestion();
+                    gameNavigation.beginTimer();
                     gameNavigation.setTimer();
                 }
+                
             }, 5000);
-            currentQuestion++;
         }
     }
 }
 
 $(document).ready(function () {
-
-    $(".start").on("click", function () {
-        $(".contentSection").html("<div class='questionContainer'></div>");
-        $(".contentSection").append("<div class='timerSection'></div>");
-        $(".contentSection").append("<div class='answerAnimation'></div>");
-        gameNavigation.generateQuestion();
-        gameNavigation.setTimer();
-        intervalId = setInterval(gameNavigation.countDown, 1000);
-        
-
-    })
-
-
-
-
-
+    gameNavigation.start();
 })
